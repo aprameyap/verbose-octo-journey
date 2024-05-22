@@ -12,5 +12,5 @@ Root Mean Squared Error: 0.40141366222605085
 2                             DTWEXBGS    9.597642
 5               Gross_Withdrawals_MMcf    6.526822
 7             Marketed_Production_MMcf    5.008286
-3      Dry_Natural_Gas_Production_MMcf    3.875760```
+3      Dry_Natural_Gas_Production_MMcf    3.875760
 
