@@ -100,9 +100,11 @@ max_drawdown = drawdown.min()
 years = (monthly_data['DATE'].iloc[min_length] - monthly_data['DATE'].iloc[0]).days / 365.25
 cagr = ((portfolio_value / initial_aum) ** (1 / years) - 1) * 100
 
-
+print(f'Initial aum: {initial_aum}')
+print(f'Risk: {risk_tolerance * 100}', '%')
 print(f'Sharpe Ratio: {sharpe_ratio}')
 print(f'Maximum Drawdown: {max_drawdown}')
+print(f'Max DD %: {(np.abs(max_drawdown)/initial_aum) * 100}', '%')
 print(f'Final Portfolio Value: {portfolio_value}')
 print(f'CAGR: {cagr}')
 
