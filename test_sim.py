@@ -4,6 +4,7 @@ import json
 import os
 from sklearn.metrics import mean_absolute_error
 import numpy as np
+import matplotlib.pyplot as plt
 
 model_file_path = 'catboost_ng_model.bin'
 params_file_path = 'best_params.json'
@@ -66,7 +67,7 @@ print(f'Mean Absolute Error (MAE) for predictions: {mae}')
 
 # Simulator
 initial_aum = 1000000  # AUM
-risk_tolerance = 0.15  # Risk %
+risk_tolerance = 1  # Risk %
 max_risk_amount = initial_aum * risk_tolerance
 
 portfolio_value = initial_aum
@@ -96,13 +97,27 @@ cumulative_returns = np.cumsum(returns)
 running_max = np.maximum.accumulate(cumulative_returns)
 drawdown = cumulative_returns - running_max
 max_drawdown = drawdown.min()
+years = (monthly_data['DATE'].iloc[min_length] - monthly_data['DATE'].iloc[0]).days / 365.25
+cagr = ((portfolio_value / initial_aum) ** (1 / years) - 1) * 100
+
 
 print(f'Sharpe Ratio: {sharpe_ratio}')
 print(f'Maximum Drawdown: {max_drawdown}')
 print(f'Final Portfolio Value: {portfolio_value}')
+print(f'CAGR: {cagr}')
+
 
 # Print the order book
 print("\nOrder Book:")
 print("Direction\tSize")
 for order in order_book:
     print(f"{order[0]}\t{order[1]:.2f}")
+
+# Plot the portfolio value over time
+plt.figure(figsize=(12, 6))
+plt.plot(monthly_data['DATE'].iloc[:min_length], portfolio_values, marker='o')
+plt.title('Portfolio Value Over Time')
+plt.xlabel('Date')
+plt.ylabel('Portfolio Value (USD)')
+plt.grid(True)
+plt.show()
