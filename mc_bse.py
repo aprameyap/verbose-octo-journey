@@ -40,7 +40,7 @@ def preprocess_metric_data(metric_data):
     metric_data['Date'] = pd.to_datetime(metric_data['Date'])
 
     # Calculate daily returns
-    metric_data['Daily_Return'] = metric_data['Close Price'].pct_change()
+    metric_data['Daily_Return'] = metric_data['WAP'].pct_change()
 
     # Calculate volatility (standard deviation of daily returns)
     volatility = metric_data['Daily_Return'].std()
@@ -48,7 +48,7 @@ def preprocess_metric_data(metric_data):
     return metric_data, volatility
 
 # Read metric data from CSV
-metric_data = pd.read_csv('HDFCBANK.csv')
+metric_data = pd.read_csv('RIL.csv')
 
 # Preprocess metric data and calculate necessary metrics
 metric_data, volatility = preprocess_metric_data(metric_data)
@@ -57,12 +57,12 @@ metric_data, volatility = preprocess_metric_data(metric_data)
 close_prices = metric_data['Close Price']
 
 # Perform Monte Carlo simulations
-num_simulations = 150
+num_simulations = 1500
 num_days = 7
 simulation_results = monte_carlo_simulations(close_prices, num_simulations, num_days)
 
 # Plot simulation results
-plot_simulation(simulation_results, 'HDFCBANK')
+plot_simulation(simulation_results, 'RIL')
 
 # Flatten the list of simulated prices
 all_simulated_prices = [price for sim in simulation_results for price in sim]
