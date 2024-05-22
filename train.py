@@ -7,8 +7,6 @@ import json
 data = pd.read_csv('NG/NG_dataset.csv')
 
 data['DATE'] = pd.to_datetime(data['DATE'])
-data.drop(columns=['Week of'], inplace=True)
-
 target = 'NG_Spot_Price'
 features = data.columns.difference(['DATE', target])
 X = data[features]
