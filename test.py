@@ -64,7 +64,7 @@ y_true_truncated = y_true[:len(monthly_predictions)]
 mae = mean_absolute_error(y_true_truncated, monthly_predictions)
 print(f'Mean Absolute Error (MAE) for predictions: {mae}')
 
-# Initialize portfolio
+# Simulator
 initial_aum = 1000000  # AUM
 risk_tolerance = 0.15  # Risk %
 max_risk_amount = initial_aum * risk_tolerance
@@ -81,19 +81,17 @@ for i in range(len(percentage_changes_pred)):
     direction = 'LONG' if position_direction > 0 else 'SHORT'
     order_book.append((direction, position_size))
     
-    # Calculate profit/loss
     profit_loss = position_size * percentage_changes_true[i] / 100 * position_direction
     portfolio_value += profit_loss
     position_values.append(profit_loss)
     portfolio_values.append(portfolio_value)
 
-# Calculate performance metrics
+#Metrics
 returns = np.array(position_values)
 mean_return = np.mean(returns)
 std_return = np.std(returns)
 sharpe_ratio = mean_return / std_return * np.sqrt(12)
 
-# Calculate maximum drawdown
 cumulative_returns = np.cumsum(returns)
 running_max = np.maximum.accumulate(cumulative_returns)
 drawdown = cumulative_returns - running_max
