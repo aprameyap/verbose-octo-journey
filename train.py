@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
-from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 import catboost as cb
 import json
 
@@ -43,6 +43,10 @@ y_pred = best_model.predict(X_test)
 
 mae = mean_absolute_error(y_test, y_pred)
 print(f'Mean Absolute Error: {mae}')
+
+# Calculate RMSE
+rmse = mean_squared_error(y_test, y_pred, squared=False)
+print(f'Root Mean Squared Error: {rmse}')
 
 feature_importances = best_model.get_feature_importance()
 feature_importance_df = pd.DataFrame({'Feature': features, 'Importance': feature_importances})
