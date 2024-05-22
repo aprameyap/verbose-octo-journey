@@ -1,5 +1,7 @@
 # verbose-octo-journey
 
+Forecasting prices of Henry Hub Natural Gas Futures (NYMEX:NG1!)
+
 22-05-24: 
 ```
 Training:
