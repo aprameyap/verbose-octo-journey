@@ -79,13 +79,14 @@ for i in range(len(percentage_changes_pred)):
     position_size = max_risk_amount * abs(percentage_changes_pred[i]) / 100
     position_direction = np.sign(percentage_changes_pred[i])
     
-    direction = 'LONG' if position_direction > 0 else 'SHORT'
-    order_book.append((direction, position_size))
-    
-    profit_loss = position_size * percentage_changes_true[i] / 100 * position_direction
-    portfolio_value += profit_loss
-    position_values.append(profit_loss)
-    portfolio_values.append(portfolio_value)
+    if abs(percentage_changes_pred[i]) > 15:
+        direction = 'LONG' if position_direction > 0 else 'SHORT'
+        order_book.append((direction, position_size))
+        
+        profit_loss = position_size * percentage_changes_true[i] / 100 * position_direction
+        portfolio_value += profit_loss
+        position_values.append(profit_loss)
+        portfolio_values.append(portfolio_value)
 
 #Metrics
 returns = np.array(position_values)
@@ -109,17 +110,17 @@ print(f'Final Portfolio Value: {portfolio_value}')
 print(f'CAGR: {cagr}')
 
 
-# # Print the order book
-# print("\nOrder Book:")
-# print("Direction\tSize")
-# for order in order_book:
-#     print(f"{order[0]}\t{order[1]:.2f}")
+# Print the order book
+print("\nOrder Book:")
+print("Direction\tSize")
+for order in order_book:
+    print(f"{order[0]}\t{order[1]:.2f}")
 
-# Plot the portfolio value over time
-plt.figure(figsize=(12, 6))
-plt.plot(monthly_data['DATE'].iloc[:min_length], portfolio_values, marker='o')
-plt.title('Portfolio Value Over Time')
-plt.xlabel('Date')
-plt.ylabel('Portfolio Value (USD)')
-plt.grid(True)
-plt.show()
+# # Plot the portfolio value over time
+# plt.figure(figsize=(12, 6))
+# plt.plot(monthly_data['DATE'].iloc[:min_length], portfolio_values, marker='o')
+# plt.title('Portfolio Value Over Time')
+# plt.xlabel('Date')
+# plt.ylabel('Portfolio Value (USD)')
+# plt.grid(True)
+# plt.show()

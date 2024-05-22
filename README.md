@@ -19,3 +19,12 @@ Root Mean Squared Error: 0.48223190373640573
 3      Dry_Natural_Gas_Production_MMcf    5.150494
 5               Gross_Withdrawals_MMcf    3.598970
 ```
+
+Data sources:
+- https://fred.stlouisfed.org/series/MEDCPIM158SFRBCLE
+- https://www.eia.gov/dnav/ng/ng_move_impc_s1_m.htm
+- https://ir.eia.gov/ngs/ngs.html
+- https://www.eia.gov/dnav/ng/ng_pri_fut_s1_w.htm
+- https://www.eia.gov/dnav/ng/ng_prod_sum_dc_NUS_MMCF_m.htm
+- https://www.eia.gov/dnav/ng/hist/rngwhhdm.htm
+- https://fred.stlouisfed.org/series/DTWEXBGS
