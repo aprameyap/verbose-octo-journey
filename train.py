@@ -41,8 +41,6 @@ y_pred = best_model.predict(X_test)
 
 mae = mean_absolute_error(y_test, y_pred)
 print(f'Mean Absolute Error: {mae}')
-
-# Calculate RMSE
 rmse = mean_squared_error(y_test, y_pred, squared=False)
 print(f'Root Mean Squared Error: {rmse}')
 
