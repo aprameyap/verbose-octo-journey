@@ -109,11 +109,11 @@ print(f'Final Portfolio Value: {portfolio_value}')
 print(f'CAGR: {cagr}')
 
 
-# Print the order book
-print("\nOrder Book:")
-print("Direction\tSize")
-for order in order_book:
-    print(f"{order[0]}\t{order[1]:.2f}")
+# # Print the order book
+# print("\nOrder Book:")
+# print("Direction\tSize")
+# for order in order_book:
+#     print(f"{order[0]}\t{order[1]:.2f}")
 
 # Plot the portfolio value over time
 plt.figure(figsize=(12, 6))

@@ -16,17 +16,4 @@ Root Mean Squared Error: 0.48223190373640573
 7             Marketed_Production_MMcf    7.753190
 3      Dry_Natural_Gas_Production_MMcf    5.150494
 5               Gross_Withdrawals_MMcf    3.598970
-
-Backtest:
-
-Mean Absolute Error (MAE) for percentage changes: 3.9169483650677526
-Mean Absolute Error (MAE) for predictions: 0.05947888166687087
-Initial aum: 1000000
-Risk: 100 %
-Sharpe Ratio: 2.4498176441949426
-Maximum Drawdown: -6707.209107056959
-Max DD %: 0.6707209107056958 %
-Final Portfolio Value: 1650869.6425111357
-CAGR: 33.18147123897717
-
 ```
