@@ -52,7 +52,6 @@ petroleum_df['Week of'] = pd.to_datetime(petroleum_df['Week of'], format='%m/%d/
 final_df = pd.merge(final_df, petroleum_df, left_on='DATE', right_on='Week of', how='left')
 
 storage_df = pd.read_csv('NG/ng_storage.csv')
-print(storage_df)
 storage_df['Week ending'] = pd.to_datetime(storage_df['Week ending'], format='%d-%b-%y')
 storage_df.rename(columns={'Week ending': 'DATE'}, inplace=True)
 
@@ -65,5 +64,5 @@ monthly_df = final_df.resample('M').mean()
 
 monthly_df.reset_index(inplace=True)
 
-print(monthly_df)
+# print(monthly_df)
 monthly_df.to_csv('NG/NG_dataset.csv', index=False)
