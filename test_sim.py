@@ -48,11 +48,11 @@ def calculate_percentage_change(values, N):
 N = 1  # Number of months ahead for percentage change calculation
 
 percentage_changes_pred = calculate_percentage_change(monthly_predictions, N)
-# print(f"Percentage changes for the next {N} months (predictions):", percentage_changes_pred)
+print(f"Percentage changes for the next {N} months (predictions):", percentage_changes_pred)
 
 y_true = monthly_data['NG_Spot_Price'].values
 percentage_changes_true = calculate_percentage_change(y_true, N)
-# print(f"Percentage changes for the next {N} months (ground truth):", percentage_changes_true)
+print(f"Percentage changes for the next {N} months (ground truth):", percentage_changes_true)
 
 min_length = min(len(percentage_changes_pred), len(percentage_changes_true))
 percentage_changes_pred = percentage_changes_pred[:min_length]
@@ -115,12 +115,3 @@ print("\nOrder Book:")
 print("Direction\tSize")
 for order in order_book:
     print(f"{order[0]}\t{order[1]:.2f}")
-
-# # Plot the portfolio value over time
-# plt.figure(figsize=(12, 6))
-# plt.plot(monthly_data['DATE'].iloc[:min_length], portfolio_values, marker='o')
-# plt.title('Portfolio Value Over Time')
-# plt.xlabel('Date')
-# plt.ylabel('Portfolio Value (USD)')
-# plt.grid(True)
-# plt.show()

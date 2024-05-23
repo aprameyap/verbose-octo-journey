@@ -51,7 +51,15 @@ petroleum_df['Week of'] = pd.to_datetime(petroleum_df['Week of'], format='%m/%d/
 
 final_df = pd.merge(final_df, petroleum_df, left_on='DATE', right_on='Week of', how='left')
 
-# Resample to monthly frequency
+storage_df = pd.read_csv('NG/ng_storage.csv')
+print(storage_df)
+storage_df['Week ending'] = pd.to_datetime(storage_df['Week ending'], format='%d-%b-%y')
+storage_df.rename(columns={'Week ending': 'DATE'}, inplace=True)
+
+storage_df = storage_df.iloc[:, :-1]
+
+final_df = pd.merge(final_df, storage_df, on='DATE', how='left')
+
 final_df.set_index('DATE', inplace=True)
 monthly_df = final_df.resample('M').mean()
 
