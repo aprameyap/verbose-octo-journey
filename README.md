@@ -2,6 +2,8 @@
 
 Forecasting prices of Henry Hub Natural Gas Futures (NYMEX:NG1!)
 
+![Forecast of NYMEX:NG1! v/s Ground truth](Figure_1.png)
+
 22-05-24: 
 ```
 Training:
