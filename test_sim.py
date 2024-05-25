@@ -69,7 +69,7 @@ portfolio_values = []
 order_book = []
 trade_dates = []
 
-#Static exit after N month
+#Static exit after one month (N months didn't work)
 
 for i in range(len(percentage_changes_pred)):
     position_size = max_risk_amount * abs(percentage_changes_pred[i]) / 100
@@ -137,13 +137,6 @@ print("Direction\tSize")
 for order in order_book:
     print(f"{order[0]}\t{order[1]:.2f}")
 
-plt.figure(figsize=(10, 6))
-plt.plot(trade_dates, portfolio_values, marker='o')
-plt.xlabel('Date')
-plt.ylabel('Portfolio Value (M)')
-plt.title(f'Portfolio Value Over Time (CAGR: {cagr:.2f}%)')
-plt.grid(True)
-plt.show()
 # Print order book (Dynamic)
 # print("\nOrder Book:")
 # print("Direction\tSize\tEntry Price")
