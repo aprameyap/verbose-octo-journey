@@ -2,7 +2,6 @@ import pandas as pd
 import catboost as cb
 import json
 import os
-from sklearn.metrics import mean_absolute_error
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -58,13 +57,6 @@ print(f"Percentage changes for the next {N} months (ground truth):", percentage_
 min_length = min(len(percentage_changes_pred), len(percentage_changes_true))
 percentage_changes_pred = percentage_changes_pred[:min_length]
 percentage_changes_true = percentage_changes_true[:min_length]
-
-mae_pct_change = mean_absolute_error(percentage_changes_true, percentage_changes_pred)
-print(f'Mean Absolute Error (MAE) for percentage changes: {mae_pct_change}')
-
-y_true_truncated = y_true[:len(monthly_predictions)]
-mae = mean_absolute_error(y_true_truncated, monthly_predictions)
-print(f'Mean Absolute Error (MAE) for predictions: {mae}')
 
 # Simulator
 initial_aum = 1000000  # AUM
