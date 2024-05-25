@@ -29,6 +29,7 @@ new_data.set_index('DATE', inplace=True)
 monthly_data = new_data.resample('M').mean()
 
 monthly_data.reset_index(inplace=True)
+# print("Ground Truth", monthly_data['NG_Spot_Price'])
 features = [col for col in monthly_data.columns if col not in ['DATE', 'Week of', 'NG_Spot_Price']]
 monthly_X = monthly_data[features]
 
@@ -45,7 +46,7 @@ def calculate_percentage_change(values, N):
         pct_changes.append(pct_change)
     return pct_changes
 
-N = 1  # Number of months ahead for percentage change calculation
+N = 1 # Number of months ahead for percentage change calculation
 
 percentage_changes_pred = calculate_percentage_change(monthly_predictions, N)
 print(f"Percentage changes for the next {N} months (predictions):", percentage_changes_pred)
@@ -75,6 +76,8 @@ position_values = []
 portfolio_values = []
 order_book = []
 
+#Static exit after N month
+
 for i in range(len(percentage_changes_pred)):
     position_size = max_risk_amount * abs(percentage_changes_pred[i]) / 100
     position_direction = np.sign(percentage_changes_pred[i])
@@ -83,10 +86,34 @@ for i in range(len(percentage_changes_pred)):
         direction = 'LONG' if position_direction > 0 else 'SHORT'
         order_book.append((direction, position_size))
         
-        profit_loss = position_size * percentage_changes_true[i] / 100 * position_direction
+        profit_loss = (position_size * percentage_changes_true[i] / 100 * position_direction) - position_size * 0.05 #Includes 5% commission
         portfolio_value += profit_loss
         position_values.append(profit_loss)
         portfolio_values.append(portfolio_value)
+
+# Dynamic exit (not realistic, but ok)
+
+# positions = []
+# for i in range(len(percentage_changes_pred)):
+#     position_size = max_risk_amount * abs(percentage_changes_pred[i]) / 100
+#     position_direction = np.sign(percentage_changes_pred[i])
+
+#     if abs(percentage_changes_pred[i]) > 20:
+#         direction = 'LONG' if position_direction > 0 else 'SHORT'
+#         entry_price = monthly_data['NG_Spot_Price'].iloc[i]
+#         order_book.append((direction, position_size, entry_price))
+#         positions.append((direction, position_size, entry_price))
+
+#     for j, position in enumerate(positions):
+#         direction, size, entry_price = position
+#         exit_price = monthly_data['NG_Spot_Price'].iloc[i + 1]
+#         profit_loss = size * (exit_price - entry_price) * (1 if direction == 'LONG' else -1)
+#         portfolio_value += profit_loss
+#         position_values.append(profit_loss)
+#         portfolio_values.append(portfolio_value)
+#         positions[j] = None 
+
+#     positions = [p for p in positions if p is not None]
 
 #Metrics
 returns = np.array(position_values)
@@ -115,3 +142,9 @@ print("\nOrder Book:")
 print("Direction\tSize")
 for order in order_book:
     print(f"{order[0]}\t{order[1]:.2f}")
+
+# Print order book (Dynamic)
+# print("\nOrder Book:")
+# print("Direction\tSize\tEntry Price")
+# for order in order_book:
+#     print(f"{order[0]}\t{order[1]:.2f}\t{order[2]:.2f}")
