@@ -60,7 +60,7 @@ percentage_changes_true = percentage_changes_true[:min_length]
 
 # Simulator
 initial_aum = 1000000  # AUM
-risk_tolerance = 1  # Risk %
+risk_tolerance = 1  # Risk factor
 max_risk_amount = initial_aum * risk_tolerance
 
 portfolio_value = initial_aum
