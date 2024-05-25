@@ -69,7 +69,7 @@ portfolio_values = []
 order_book = []
 trade_dates = []
 
-#Static exit after one month (N months didn't work)
+#Static exit after each month (N months didn't work)
 
 for i in range(len(percentage_changes_pred)):
     position_size = max_risk_amount * abs(percentage_changes_pred[i]) / 100
