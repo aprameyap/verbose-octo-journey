@@ -147,7 +147,7 @@ if best_result:
     plt.plot(best_result['Trade Dates'], best_result['Portfolio Values'], marker='o')
     plt.xlabel('Date')
     plt.ylabel('Portfolio Value')
-    plt.title(f'Portfolio Value Over Time (CAGR: {best_result["CAGR"]:.2f}%)')
+    plt.title(f'Portfolio Value Over Time (CAGR: {best_result["CAGR"]:.2f}%, Sharpe ratio: {best_result["Sharpe Ratio"]:.2f}, Max DD %: {((np.abs(best_result["Max Drawdown"]) / initial_aum) * 100):.2f}%)')
     plt.grid(True)
     plt.show()
 else:
