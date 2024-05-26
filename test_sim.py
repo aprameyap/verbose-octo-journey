@@ -45,7 +45,7 @@ def calculate_percentage_change(values, N):
         pct_changes.append(pct_change)
     return pct_changes
 
-N = 1 # Number of months ahead for percentage change calculation
+N = 6 # Number of months ahead for percentage change calculation
 
 percentage_changes_pred = calculate_percentage_change(monthly_predictions, N)
 print(f"Percentage changes for the next {N} months (predictions):", percentage_changes_pred)
@@ -61,6 +61,7 @@ percentage_changes_true = percentage_changes_true[:min_length]
 # Simulator
 initial_aum = 1000000  # AUM
 risk_tolerance = 1  # Risk factor
+threshold = 10
 max_risk_amount = initial_aum * risk_tolerance
 
 portfolio_value = initial_aum
@@ -74,8 +75,8 @@ trade_dates = []
 for i in range(len(percentage_changes_pred)):
     position_size = max_risk_amount * abs(percentage_changes_pred[i]) / 100
     position_direction = np.sign(percentage_changes_pred[i])
-    
-    if abs(percentage_changes_pred[i]) > 15:
+
+    if abs(percentage_changes_pred[i]) > threshold:
         direction = 'LONG' if position_direction > 0 else 'SHORT'
         order_book.append((direction, position_size))
         
@@ -142,3 +143,21 @@ for order in order_book:
 # print("Direction\tSize\tEntry Price")
 # for order in order_book:
 #     print(f"{order[0]}\t{order[1]:.2f}\t{order[2]:.2f}")
+
+plt.figure(figsize=(10, 6))
+plt.plot(monthly_data['DATE'], y_true, label='Actual NG Spot Price', color='blue', marker='o')
+plt.plot(monthly_data['DATE'][:len(monthly_predictions)], monthly_predictions, label='Predicted NG Spot Price', color='red', marker='x')
+plt.xlabel('Date')
+plt.ylabel('NG Spot Price')
+plt.title('Actual vs Predicted NG Spot Price')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+plt.figure(figsize=(10, 6))
+plt.plot(trade_dates, portfolio_values, marker='o')
+plt.xlabel('Date')
+plt.ylabel('Portfolio Value')
+plt.title(f'Portfolio Value Over Time (CAGR: {cagr:.2f}%)')
+plt.grid(True)
+plt.show()
