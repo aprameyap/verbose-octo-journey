@@ -58,6 +58,8 @@ min_length = min(len(percentage_changes_pred), len(percentage_changes_true))
 percentage_changes_pred = percentage_changes_pred[:min_length]
 percentage_changes_true = percentage_changes_true[:min_length]
 
+dates = monthly_data['DATE'][N:N + min_length]
+
 # Simulator
 initial_aum = 1000000  # AUM
 risk_tolerance = 1  # Risk factor
@@ -144,20 +146,20 @@ for order in order_book:
 # for order in order_book:
 #     print(f"{order[0]}\t{order[1]:.2f}\t{order[2]:.2f}")
 
-plt.figure(figsize=(10, 6))
-plt.plot(monthly_data['DATE'], y_true, label='Actual NG Spot Price', color='blue', marker='o')
-plt.plot(monthly_data['DATE'][:len(monthly_predictions)], monthly_predictions, label='Predicted NG Spot Price', color='red', marker='x')
-plt.xlabel('Date')
-plt.ylabel('NG Spot Price')
-plt.title('Actual vs Predicted NG Spot Price')
-plt.legend()
-plt.grid(True)
-plt.show()
+# plt.figure(figsize=(10, 6))
+# plt.plot(dates, percentage_changes_true, label=f'Actual NG Spot Price (percent change, next {N} month(s))', color='blue', marker='o')
+# plt.plot(dates, percentage_changes_pred, label=f'Predicted NG Spot Price (predicted percent change, next {N} month(s))', color='red', marker='x')
+# plt.xlabel('Date')
+# plt.ylabel('NG Spot Price change (%)')
+# plt.title('Actual vs Predicted changes in NG Spot Price')
+# plt.legend()
+# plt.grid(True)
+# plt.show()
 
-plt.figure(figsize=(10, 6))
-plt.plot(trade_dates, portfolio_values, marker='o')
-plt.xlabel('Date')
-plt.ylabel('Portfolio Value')
-plt.title(f'Portfolio Value Over Time (CAGR: {cagr:.2f}%)')
-plt.grid(True)
-plt.show()
+# plt.figure(figsize=(10, 6))
+# plt.plot(trade_dates, portfolio_values, marker='o')
+# plt.xlabel('Date')
+# plt.ylabel('Portfolio Value')
+# plt.title(f'Portfolio Value Over Time (CAGR: {cagr:.2f}%)')
+# plt.grid(True)
+# plt.show()
