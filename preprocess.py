@@ -54,15 +54,26 @@ final_df = pd.merge(final_df, petroleum_df, left_on='DATE', right_on='Week of', 
 storage_df = pd.read_csv('NG/ng_storage.csv')
 storage_df['Week ending'] = pd.to_datetime(storage_df['Week ending'], format='%d-%b-%y')
 storage_df.rename(columns={'Week ending': 'DATE'}, inplace=True)
-
 storage_df = storage_df.iloc[:, :-1]
 
 final_df = pd.merge(final_df, storage_df, on='DATE', how='left')
 
+hurricane_df = pd.read_csv('NG/storms.csv')
+hurricane_df['datetime'] = pd.to_datetime(hurricane_df[['year', 'month', 'day', 'hour']])
+hurricane_df.set_index('datetime', inplace=True)
+
+weekly_hurricane_df = hurricane_df.resample('W-FRI').agg({
+    'wind': 'mean',
+    'pressure': 'mean',
+    'tropicalstorm_force_diameter': 'mean',
+    'hurricane_force_diameter': 'mean'
+}).reset_index()
+weekly_hurricane_df.rename(columns={'datetime': 'DATE'}, inplace=True)
+
+final_df = pd.merge(final_df, weekly_hurricane_df, on='DATE', how='left')
+
 final_df.set_index('DATE', inplace=True)
 monthly_df = final_df.resample('M').mean()
-
 monthly_df.reset_index(inplace=True)
 
-# print(monthly_df)
 monthly_df.to_csv('NG/NG_dataset.csv', index=False)
