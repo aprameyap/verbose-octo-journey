@@ -40,7 +40,7 @@ def calculate_percentage_change(values, N):
         pct_changes.append(pct_change)
     return pct_changes
 
-threshold = 15
+threshold = 10
 initial_aum = 1000000
 risk_tolerance = 1
 
