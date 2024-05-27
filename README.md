@@ -52,26 +52,26 @@ Root Mean Squared Error: 0.45859897346198075
 
 Training:
 
-Mean Absolute Error: 0.3667739328646564
-Root Mean Squared Error: 0.4822559210680101
+Mean Absolute Error: 0.4375622595007447
+Root Mean Squared Error: 0.5962166281677603
                                 Feature  Importance
-5     Europe Brent Spot Price FOB $/bbl   27.598614
-1   Cushing OK WTI Spot Price FOB $/bbl   12.306035
-2                              DTWEXBGS   10.228230
-0                  CORESTICKM159SFRBATL    9.776528
-11        Plant_Liquids_Production_MMcf    8.864959
-12                                 Salt    5.772033
-10                       Pacific Region    4.081074
-4                           East Region    3.969586
-7                          Imports_MMcf    3.776993
-6                Gross_Withdrawals_MMcf    3.390039
-8              Marketed_Production_MMcf    3.149448
-9                       Mountain Region    2.375543
-3       Dry_Natural_Gas_Production_MMcf    1.311655
-16                                 wind    1.263633
-13             hurricane_force_diameter    0.862160
-14                             pressure    0.645310
-15         tropicalstorm_force_diameter    0.628161
+1   Cushing OK WTI Spot Price FOB $/bbl   24.258784
+5     Europe Brent Spot Price FOB $/bbl   18.464282
+0                  CORESTICKM159SFRBATL    9.588419
+2                              DTWEXBGS    8.046189
+11        Plant_Liquids_Production_MMcf    6.747634
+6                Gross_Withdrawals_MMcf    6.438796
+12                                 Salt    4.421382
+7                          Imports_MMcf    4.404972
+3       Dry_Natural_Gas_Production_MMcf    3.339133
+10                       Pacific Region    2.986192
+4                           East Region    2.870208
+8              Marketed_Production_MMcf    2.764386
+9                       Mountain Region    2.167325
+15         tropicalstorm_force_diameter    1.123334
+14                             pressure    1.018904
+16                                 wind    0.870621
+13             hurricane_force_diameter    0.489442
 ```
 
 Data sources:
