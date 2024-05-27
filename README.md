@@ -2,6 +2,10 @@
 
 Forecasting prices of Henry Hub Natural Gas Futures (NYMEX:NG1!)
 
+There is an optimal number of months (N) to which the model predicts the cumulative percentage change to the given trading logic.
+The hypothesis would be (check test_sim.py for N calculation): The N value remains constant in near future (within a year), the new N value will be searched by running the same backtest through the next year.
+Usually N ranges between 6-8 months.
+
 ![Time period of the data collected](Figure_3.png)
 ![Forecast of NYMEX:NG1! v/s Ground truth](Figure_5.png) 
 ![1M portfolio with given trading logic on test.csv](Figure_4.png)
