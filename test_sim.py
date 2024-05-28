@@ -43,11 +43,11 @@ def calculate_percentage_change(values, N):
 N = 7  # Number of months ahead for percentage change calculation and position duration
 
 percentage_changes_pred = calculate_percentage_change(monthly_predictions, N)
-print(f"Percentage changes for the next {N} months (predictions):", percentage_changes_pred)
+# print(f"Percentage changes for the next {N} months (predictions):", percentage_changes_pred) #Line for debugging
 
 y_true = monthly_data['NG_Spot_Price'].values
 percentage_changes_true = calculate_percentage_change(y_true, N)
-print(f"Percentage changes for the next {N} months (ground truth):", percentage_changes_true)
+# print(f"Percentage changes for the next {N} months (ground truth):", percentage_changes_true) #Line for debugging
 
 min_length = min(len(percentage_changes_pred), len(percentage_changes_true))
 percentage_changes_pred = percentage_changes_pred[:min_length]
@@ -125,6 +125,7 @@ cagr = ((portfolio_value / initial_aum) ** (1 / years) - 1) * 100 if years != 0 
 
 print(f'Initial AUM: {initial_aum}')
 print(f'Risk: {risk_tolerance * 100}%')
+print(f'N: {N} months')
 print(f'Sharpe Ratio: {sharpe_ratio}')
 print(f'Maximum Drawdown: {max_drawdown}')
 print(f'Max DD %: {(np.abs(max_drawdown) / initial_aum) * 100}%')
@@ -147,10 +148,10 @@ for order in order_book:
 # plt.grid(True)
 # plt.show()
 
-plt.figure(figsize=(10, 6))
-plt.plot(trade_dates, portfolio_values, marker='o')
-plt.xlabel('Date')
-plt.ylabel('Portfolio Value')
-plt.title(f'Portfolio Value Over Time (CAGR: {cagr:.2f}%, Sharpe ratio: {sharpe_ratio:.2f}, Max DD %: {((np.abs(max_drawdown) / initial_aum) * 100):.2f}%)')
-plt.grid(True)
-plt.show()
+# plt.figure(figsize=(10, 6))
+# plt.plot(trade_dates, portfolio_values, marker='o')
+# plt.xlabel('Date')
+# plt.ylabel('Portfolio Value')
+# plt.title(f'Portfolio Value Over Time (CAGR: {cagr:.2f}%, Sharpe ratio: {sharpe_ratio:.2f}, Max DD %: {((np.abs(max_drawdown) / initial_aum) * 100):.2f}%)')
+# plt.grid(True)
+# plt.show()
