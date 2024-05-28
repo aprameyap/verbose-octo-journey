@@ -40,115 +40,93 @@ def calculate_percentage_change(values, N):
         pct_changes.append(pct_change)
     return pct_changes
 
+N = 7 # Number of months ahead for percentage change calculation (note that this will be unique for a particular test set, will usually lie between 1 and 9)
+
+percentage_changes_pred = calculate_percentage_change(monthly_predictions, N)
+# print(f"Percentage changes for the next {N} months (predictions):", percentage_changes_pred)
+
+y_true = monthly_data['NG_Spot_Price'].values
+percentage_changes_true = calculate_percentage_change(y_true, N)
+# print(f"Percentage changes for the next {N} months (ground truth):", percentage_changes_true)
+
+min_length = min(len(percentage_changes_pred), len(percentage_changes_true))
+percentage_changes_pred = percentage_changes_pred[:min_length]
+percentage_changes_true = percentage_changes_true[:min_length]
+
+dates = monthly_data['DATE'][N:N + min_length]
+
+# Simulator
+initial_aum = 1000000 # AUM
+risk_tolerance = 1  # Risk factor
 threshold = 15
-initial_aum = 1000000
-risk_tolerance = 1
+max_risk_amount = initial_aum * risk_tolerance
 
-def evaluate_strategy(N, threshold=threshold, initial_aum=initial_aum, risk_tolerance=risk_tolerance):
-    percentage_changes_pred = calculate_percentage_change(monthly_predictions, N)
-    y_true = monthly_data['NG_Spot_Price'].values
-    percentage_changes_true = calculate_percentage_change(y_true, N)
+portfolio_value = initial_aum
+position_values = []
+portfolio_values = []
+order_book = []
+trade_dates = []
+entry_exit_dates = []
 
-    min_length = min(len(percentage_changes_pred), len(percentage_changes_true))
-    percentage_changes_pred = percentage_changes_pred[:min_length]
-    percentage_changes_true = percentage_changes_true[:min_length]
+#Static exit after N months
 
-    if len(monthly_data['DATE']) < N + min_length:
-        return None
+for i in range(len(percentage_changes_pred)):
+    position_size = max_risk_amount * abs(percentage_changes_pred[i]) / 100
+    position_direction = np.sign(percentage_changes_pred[i])
+    entry_date = dates.iloc[i]
+    if abs(percentage_changes_pred[i]) > threshold:
+        direction = 'LONG' if position_direction > 0 else 'SHORT'
+        order_book.append((direction, position_size, entry_date))
 
-    dates = monthly_data['DATE'][N:N + min_length]
+        profit_loss = (position_size * percentage_changes_true[i] / 100 * position_direction) - position_size * 0.05 #Includes 5% commission
+        portfolio_value += profit_loss
+        position_values.append(profit_loss)
+        portfolio_values.append(portfolio_value)
+        trade_dates.append(monthly_data['DATE'].iloc[i])
+        entry_exit_dates.append((entry_date))
 
-    max_risk_amount = initial_aum * risk_tolerance
-    portfolio_value = initial_aum
-    position_values = []
-    portfolio_values = []
-    order_book = []
-    trade_dates = []
+#Metrics
+returns = np.array(position_values)
+mean_return = np.mean(returns)
+std_return = np.std(returns)
+sharpe_ratio = mean_return / std_return * np.sqrt(12)
 
-    for i in range(len(percentage_changes_pred)):
-        position_size = max_risk_amount * abs(percentage_changes_pred[i]) / 100
-        position_direction = np.sign(percentage_changes_pred[i])
+cumulative_returns = np.cumsum(returns)
+running_max = np.maximum.accumulate(cumulative_returns)
+drawdown = cumulative_returns - running_max
+max_drawdown = drawdown.min()
+years = (monthly_data['DATE'].iloc[min_length] - monthly_data['DATE'].iloc[0]).days / 365.25
+cagr = ((portfolio_value / initial_aum) ** (1 / years) - 1) * 100
 
-        if abs(percentage_changes_pred[i]) > threshold:
-            direction = 'LONG' if position_direction > 0 else 'SHORT'
-            order_book.append((direction, position_size))
+print(f'Initial aum: {initial_aum}')
+print(f'Risk: {risk_tolerance * 100}', '%')
+print(f'Sharpe Ratio: {sharpe_ratio}')
+print(f'Maximum Drawdown: {max_drawdown}')
+print(f'Max DD %: {(np.abs(max_drawdown)/initial_aum) * 100}', '%')
+print(f'Final Portfolio Value: {portfolio_value}')
+print(f'CAGR: {cagr}')
 
-            profit_loss = (position_size * percentage_changes_true[i] / 100 * position_direction) - position_size * 0.05  # Includes 5% commission
-            portfolio_value += profit_loss
-            position_values.append(profit_loss)
-            portfolio_values.append(portfolio_value)
-            trade_dates.append(dates.iloc[i])
 
-    returns = np.array(position_values)
-    mean_return = np.mean(returns)
-    std_return = np.std(returns)
-    sharpe_ratio = mean_return / std_return * np.sqrt(12) if std_return != 0 else 0
+# Print the order book
+print("\nOrder Book:")
+print("Direction\tSize\tEntry Date")
+for order in order_book:
+    print(f"{order[0]}\t{order[1]:.2f}\t{order[2].strftime('%Y-%m-%d')}")
 
-    cumulative_returns = np.cumsum(returns)
-    running_max = np.maximum.accumulate(cumulative_returns)
-    drawdown = cumulative_returns - running_max
-    max_drawdown = drawdown.min()
+plt.figure(figsize=(10, 6))
+plt.plot(dates, percentage_changes_true, label=f'Actual NG Spot Price (percent change, next {N} month(s))', color='blue', marker='o')
+plt.plot(dates, percentage_changes_pred, label=f'Predicted NG Spot Price (predicted percent change, next {N} month(s))', color='red', marker='x')
+plt.xlabel('Date')
+plt.ylabel('NG Spot Price change (%)')
+plt.title('Actual vs Predicted changes in NG Spot Price')
+plt.legend()
+plt.grid(True)
+plt.show()
 
-    if len(dates) > 0:
-        years = (dates.iloc[-1] - dates.iloc[0]).days / 365.25
-        cagr = ((portfolio_value / initial_aum) ** (1 / years) - 1) * 100 if years != 0 else 0
-    else:
-        cagr = 0
-
-    return {
-        'N': N,
-        'Sharpe Ratio': sharpe_ratio,
-        'Max Drawdown': max_drawdown,
-        'CAGR': cagr,
-        'Portfolio Value': portfolio_value,
-        'Order Book': order_book,
-        'Trade Dates': trade_dates,
-        'Portfolio Values': portfolio_values,
-        'Percentage Changes True': percentage_changes_true,
-        'Percentage Changes Pred': percentage_changes_pred,
-        'Dates': dates
-    }
-
-best_result = None
-best_N = None
-
-for N in range(1, 9):  # Adjust the range as needed
-    result = evaluate_strategy(N)
-    if result and (best_result is None or (result['Sharpe Ratio'] > best_result['Sharpe Ratio'] and result['Max Drawdown'] > -initial_aum)):
-        best_result = result
-        best_N = N
-
-if best_result:
-    print(f'Best N: {best_N}')
-    print(f"Sharpe Ratio: {best_result['Sharpe Ratio']}")
-    print(f"Max Drawdown: {best_result['Max Drawdown']}")
-    print(f"Max DD %: {(np.abs(best_result['Max Drawdown']) / initial_aum) * 100}%")
-    print(f"Final Portfolio Value: {best_result['Portfolio Value']}")
-    print(f"CAGR: {best_result['CAGR']}")
-
-    # Print the order book
-    print("\nOrder Book:")
-    print("Direction\tSize")
-    for order in best_result['Order Book']:
-        print(f"{order[0]}\t{order[1]:.2f}")
-
-    # Graphing
-    plt.figure(figsize=(10, 6))
-    plt.plot(best_result['Dates'], best_result['Percentage Changes True'], label=f'Actual NG Spot Price (percent change, next {best_N} month(s))', color='blue', marker='o')
-    plt.plot(best_result['Dates'], best_result['Percentage Changes Pred'], label=f'Predicted NG Spot Price (predicted percent change, next {best_N} month(s))', color='red', marker='x')
-    plt.xlabel('Date')
-    plt.ylabel('NG Spot Price change (%)')
-    plt.title('Actual vs Predicted changes in NG Spot Price')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-
-    plt.figure(figsize=(10, 6))
-    plt.plot(best_result['Trade Dates'], best_result['Portfolio Values'], marker='o')
-    plt.xlabel('Date')
-    plt.ylabel('Portfolio Value')
-    plt.title(f'Portfolio Value Over Time (CAGR: {best_result["CAGR"]:.2f}%, Sharpe ratio: {best_result["Sharpe Ratio"]:.2f}, Max DD %: {((np.abs(best_result["Max Drawdown"]) / initial_aum) * 100):.2f}%)')
-    plt.grid(True)
-    plt.show()
-else:
-    print("No valid results found.")
+plt.figure(figsize=(10, 6))
+plt.plot(trade_dates, portfolio_values, marker='o')
+plt.xlabel('Date')
+plt.ylabel('Portfolio Value')
+plt.title(f'Portfolio Value Over Time (CAGR: {cagr:.2f}, Sharpe ratio: {sharpe_ratio:.2f}, Max DD %: {((np.abs(max_drawdown) / initial_aum) * 100):.2f}%)')
+plt.grid(True)
+plt.show()
