@@ -50,6 +50,7 @@ petroleum_df = pd.read_csv('NG/petroleum_weekly.csv')
 petroleum_df['Week of'] = pd.to_datetime(petroleum_df['Week of'], format='%m/%d/%Y')
 
 final_df = pd.merge(final_df, petroleum_df, left_on='DATE', right_on='Week of', how='left')
+final_df.drop(columns=['Week of'], inplace=True)
 
 storage_df = pd.read_csv('NG/ng_storage.csv')
 storage_df['Week ending'] = pd.to_datetime(storage_df['Week ending'], format='%d-%b-%y')
@@ -72,8 +73,5 @@ weekly_hurricane_df.rename(columns={'datetime': 'DATE'}, inplace=True)
 
 final_df = pd.merge(final_df, weekly_hurricane_df, on='DATE', how='left')
 
-final_df.set_index('DATE', inplace=True)
-monthly_df = final_df.resample('M').mean()
-monthly_df.reset_index(inplace=True)
-
-monthly_df.to_csv('NG/NG_dataset.csv', index=False)
+final_df.set_index('DATE', inplace=False)
+final_df.to_csv('NG/NG_dataset.csv', index=False)
