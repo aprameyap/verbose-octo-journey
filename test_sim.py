@@ -26,12 +26,10 @@ else:
 new_data = pd.read_csv('NG/test.csv')
 new_data['DATE'] = pd.to_datetime(new_data['DATE'])
 new_data.set_index('DATE', inplace=True)
-monthly_data = new_data.resample('M').mean()
-monthly_data.reset_index(inplace=True)
 
-features = [col for col in monthly_data.columns if col not in ['DATE', 'Week of', 'NG_Spot_Price']]
-monthly_X = monthly_data[features]
-monthly_predictions = loaded_model.predict(monthly_X)
+features = [col for col in new_data.columns if col not in ['NG_Spot_Price']]
+weekly_X = new_data[features]
+weekly_predictions = loaded_model.predict(weekly_X)
 
 def calculate_percentage_change(values, N):
     pct_changes = []
@@ -40,20 +38,19 @@ def calculate_percentage_change(values, N):
         pct_changes.append(pct_change)
     return pct_changes
 
-N = 7  # Number of months ahead for percentage change calculation and position duration
+N = 12  # Number of weeks ahead for percentage change calculation and position duration
 
-percentage_changes_pred = calculate_percentage_change(monthly_predictions, N)
-# print(f"Percentage changes for the next {N} months (predictions):", percentage_changes_pred) #Line for debugging
+percentage_changes_pred = calculate_percentage_change(weekly_predictions, N)
+print(f"Percentage changes for the next {N} weeks (predictions):", percentage_changes_pred) #Line for debugging
 
-y_true = monthly_data['NG_Spot_Price'].values
+y_true = new_data['NG_Spot_Price'].values
 percentage_changes_true = calculate_percentage_change(y_true, N)
-# print(f"Percentage changes for the next {N} months (ground truth):", percentage_changes_true) #Line for debugging
+print(f"Percentage changes for the next {N} weeks (ground truth):", percentage_changes_true) #Line for debugging
 
 min_length = min(len(percentage_changes_pred), len(percentage_changes_true))
 percentage_changes_pred = percentage_changes_pred[:min_length]
 percentage_changes_true = percentage_changes_true[:min_length]
-
-dates = monthly_data['DATE'][N:N + min_length]
+dates = new_data.index[N:N + min_length]
 
 # Simulator
 initial_aum = 1000000  # AUM
@@ -75,10 +72,10 @@ open_positions = []
 for i in range(len(percentage_changes_pred)):
     position_size = max_risk_amount * abs(percentage_changes_pred[i]) / 100
     position_direction = np.sign(percentage_changes_pred[i])
-    entry_date = dates.iloc[i]
-    exit_date = dates.iloc[i + N] if i + N < len(dates) else dates.iloc[-1]
+    entry_date = dates[i]
+    exit_date = dates[i + N] if i + N < len(dates) else dates[-1]
 
-    if abs(percentage_changes_pred[i]) > threshold and ((exit_date - entry_date).days // 30) >= N:
+    if abs(percentage_changes_pred[i]) > threshold and ((exit_date - entry_date).days) >= N:
         if position_size > available_balance:
             position_size = available_balance
 
@@ -112,20 +109,20 @@ for i in range(len(percentage_changes_pred)):
 
 # Metrics
 returns = np.array(position_values)
-mean_return = np.mean(returns)
-std_return = np.std(returns)
+mean_return = np.mean(returns) if len(returns) > 0 else 0
+std_return = np.std(returns) if len(returns) > 0 else 1
 sharpe_ratio = mean_return / std_return * np.sqrt(12) if std_return != 0 else 0
 
 cumulative_returns = np.cumsum(returns)
 running_max = np.maximum.accumulate(cumulative_returns)
 drawdown = cumulative_returns - running_max
-max_drawdown = drawdown.min()
-years = (dates.iloc[-1] - dates.iloc[0]).days / 365.25 if len(dates) > 1 else 1
+max_drawdown = drawdown.min() if len(drawdown) > 0 else 0
+years = (dates[-1] - dates[0]).days / 365.25 if len(dates) > 1 else 1
 cagr = ((portfolio_value / initial_aum) ** (1 / years) - 1) * 100 if years != 0 else 0
 
 print(f'Initial AUM: {initial_aum}')
 print(f'Risk: {risk_tolerance * 100}%')
-print(f'N: {N} months')
+print(f'N: {N} weeks')
 print(f'Sharpe Ratio: {sharpe_ratio}')
 print(f'Maximum Drawdown: {max_drawdown}')
 print(f'Max DD %: {(np.abs(max_drawdown) / initial_aum) * 100}%')
@@ -139,8 +136,8 @@ for order in order_book:
     print(f"{order[0]}\t{order[1]:.2f}\t{order[2].strftime('%Y-%m-%d')}\t{exit_date_str}")
 
 # plt.figure(figsize=(10, 6))
-# plt.plot(dates, percentage_changes_true, label=f'Actual NG Spot Price (percent change, next {N} month(s))', color='blue', marker='o')
-# plt.plot(dates, percentage_changes_pred, label=f'Predicted NG Spot Price (predicted percent change, next {N} month(s))', color='red', marker='x')
+# plt.plot(dates, percentage_changes_true, label=f'Actual NG Spot Price (percent change, next {N} week(s))', color='blue', marker='o')
+# plt.plot(dates, percentage_changes_pred, label=f'Predicted NG Spot Price (predicted percent change, next {N} week(s))', color='red', marker='x')
 # plt.xlabel('Date')
 # plt.ylabel('NG Spot Price change (%)')
 # plt.title('Actual vs Predicted changes in NG Spot Price')
