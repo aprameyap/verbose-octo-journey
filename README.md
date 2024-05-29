@@ -9,45 +9,33 @@ The hypothesis would be (check test_sim.py for N calculation): The N value remai
 ![Forecast of NYMEX:NG1! v/s Ground truth](Figure_5.png) 
 ![1M portfolio with given trading logic on test.csv](Figure_4.png)
 
-22-05-24: 
+29-05-24 (This is on weekly data, too less data for monthly training)
 ```
 Training:
 
-Mean Absolute Error: 0.3829875579601106
-Root Mean Squared Error: 0.48223190373640573
-                               Feature  Importance
-1  Cushing OK WTI Spot Price FOB $/bbl   18.375541
-4    Europe Brent Spot Price FOB $/bbl   16.635741
-6                         Imports_MMcf   15.156283
-8        Plant_Liquids_Production_MMcf   12.274401
-0                 CORESTICKM159SFRBATL   12.266013
-2                             DTWEXBGS    8.789367
-7             Marketed_Production_MMcf    7.753190
-3      Dry_Natural_Gas_Production_MMcf    5.150494
-5               Gross_Withdrawals_MMcf    3.598970
-```
-
-23-05-24
-```
-
-Training:
-
-Mean Absolute Error: 0.3565561787495663
-Root Mean Squared Error: 0.45859897346198075
+Mean Absolute Error: 0.2933105616772876
+Root Mean Squared Error: 0.8982398909067726
                                 Feature  Importance
-1   Cushing OK WTI Spot Price FOB $/bbl   22.612712
-5     Europe Brent Spot Price FOB $/bbl   11.676842
-12                                 Salt   10.036134
-11        Plant_Liquids_Production_MMcf    6.993827
-0                  CORESTICKM159SFRBATL    6.885862
-9                       Mountain Region    6.545815
-4                           East Region    6.443635
-7                          Imports_MMcf    6.077576
-10                       Pacific Region    5.804332
-8              Marketed_Production_MMcf    5.155749
-2                              DTWEXBGS    4.892531
-6                Gross_Withdrawals_MMcf    4.517890
-3       Dry_Natural_Gas_Production_MMcf    2.357097
+1   Cushing OK WTI Spot Price FOB $/bbl   15.687328
+0                  CORESTICKM159SFRBATL   12.888051
+15                 South Central Region    8.243944
+10                      Mountain Region    7.161725
+7                          Imports_MMcf    7.042360
+5     Europe Brent Spot Price FOB $/bbl    6.899478
+13        Plant_Liquids_Production_MMcf    6.254457
+2                              DTWEXBGS    5.626007
+9                        Midwest Region    5.414369
+14                                 Salt    3.777512
+12                       Pacific Region    3.752354
+3       Dry_Natural_Gas_Production_MMcf    3.477094
+4                           East Region    3.159954
+6                Gross_Withdrawals_MMcf    2.367753
+8              Marketed_Production_MMcf    1.963989
+11                              NonSalt    1.837040
+19                                 wind    1.646050
+18         tropicalstorm_force_diameter    1.168211
+17                             pressure    1.009984
+16             hurricane_force_diameter    0.622340
 ```
 
 27-05-2024
@@ -75,6 +63,47 @@ Root Mean Squared Error: 0.5962166281677603
 14                             pressure    1.018904
 16                                 wind    0.870621
 13             hurricane_force_diameter    0.489442
+```
+
+23-05-24
+```
+
+Training:
+
+Mean Absolute Error: 0.3565561787495663
+Root Mean Squared Error: 0.45859897346198075
+                                Feature  Importance
+1   Cushing OK WTI Spot Price FOB $/bbl   22.612712
+5     Europe Brent Spot Price FOB $/bbl   11.676842
+12                                 Salt   10.036134
+11        Plant_Liquids_Production_MMcf    6.993827
+0                  CORESTICKM159SFRBATL    6.885862
+9                       Mountain Region    6.545815
+4                           East Region    6.443635
+7                          Imports_MMcf    6.077576
+10                       Pacific Region    5.804332
+8              Marketed_Production_MMcf    5.155749
+2                              DTWEXBGS    4.892531
+6                Gross_Withdrawals_MMcf    4.517890
+3       Dry_Natural_Gas_Production_MMcf    2.357097
+```
+
+22-05-24: 
+```
+Training:
+
+Mean Absolute Error: 0.3829875579601106
+Root Mean Squared Error: 0.48223190373640573
+                               Feature  Importance
+1  Cushing OK WTI Spot Price FOB $/bbl   18.375541
+4    Europe Brent Spot Price FOB $/bbl   16.635741
+6                         Imports_MMcf   15.156283
+8        Plant_Liquids_Production_MMcf   12.274401
+0                 CORESTICKM159SFRBATL   12.266013
+2                             DTWEXBGS    8.789367
+7             Marketed_Production_MMcf    7.753190
+3      Dry_Natural_Gas_Production_MMcf    5.150494
+5               Gross_Withdrawals_MMcf    3.598970
 ```
 
 Data sources:
