@@ -74,4 +74,9 @@ weekly_hurricane_df.rename(columns={'datetime': 'DATE'}, inplace=True)
 final_df = pd.merge(final_df, weekly_hurricane_df, on='DATE', how='left')
 
 final_df.set_index('DATE', inplace=False)
+
+for col in final_df.columns:
+    if final_df[col].dtype == 'object':
+        final_df[col] = final_df[col].str.replace(',', '').astype(float)
+
 final_df.to_csv('NG/NG_dataset.csv', index=False)
