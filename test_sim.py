@@ -38,7 +38,7 @@ def calculate_percentage_change(values, N):
         pct_changes.append(pct_change)
     return pct_changes
 
-N = 33  # Number of weeks ahead for percentage change calculation and position duration
+N = 36  # Number of weeks ahead for percentage change calculation and position duration
 
 percentage_changes_pred = calculate_percentage_change(weekly_predictions, N)
 # print(f"Percentage changes for the next {N} weeks (predictions):", percentage_changes_pred) #Line for debugging
@@ -54,7 +54,7 @@ dates = new_data.index[N:N + min_length]
 
 # Simulator
 initial_aum = 1000000  # AUM
-risk_tolerance = 1  # Risk factor
+risk_tolerance = 0.75  # Risk factor
 threshold = 15
 max_risk_amount = initial_aum * risk_tolerance
 
