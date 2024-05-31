@@ -7,6 +7,8 @@ The hypothesis would be (check N_finder.py for N calculation): The N value remai
 In the current test set, N ~ (33-36) and Risk > 0.5 gives the best results. All of this has a threshold of 15% (up or down) for each trade to take place, this can be treated as a variable and optimised also, but finding an optimum threshold will create unnecessary computational complexities. The following image shows the optimum N for 100% risk.
 
 ![N_finder.py](Figure_1.png)
+Training info:
+
 
 29-05-24 (This is on weekly data, too less data for monthly training)
 ```
