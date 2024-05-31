@@ -38,14 +38,14 @@ def calculate_percentage_change(values, N):
         pct_changes.append(pct_change)
     return pct_changes
 
-N = 12  # Number of weeks ahead for percentage change calculation and position duration
+N = 33  # Number of weeks ahead for percentage change calculation and position duration
 
 percentage_changes_pred = calculate_percentage_change(weekly_predictions, N)
-print(f"Percentage changes for the next {N} weeks (predictions):", percentage_changes_pred) #Line for debugging
+# print(f"Percentage changes for the next {N} weeks (predictions):", percentage_changes_pred) #Line for debugging
 
 y_true = new_data['NG_Spot_Price'].values
 percentage_changes_true = calculate_percentage_change(y_true, N)
-print(f"Percentage changes for the next {N} weeks (ground truth):", percentage_changes_true) #Line for debugging
+# print(f"Percentage changes for the next {N} weeks (ground truth):", percentage_changes_true) #Line for debugging
 
 min_length = min(len(percentage_changes_pred), len(percentage_changes_true))
 percentage_changes_pred = percentage_changes_pred[:min_length]
@@ -65,8 +65,6 @@ portfolio_values = []
 order_book = []
 trade_dates = []
 entry_exit_dates = []
-
-# Track open positions
 open_positions = []
 
 for i in range(len(percentage_changes_pred)):
@@ -106,7 +104,6 @@ for i in range(len(percentage_changes_pred)):
     for position in position_exits:
         open_positions.remove(position)
 
-
 # Metrics
 returns = np.array(position_values)
 mean_return = np.mean(returns) if len(returns) > 0 else 0
@@ -137,7 +134,7 @@ for order in order_book:
 
 # plt.figure(figsize=(10, 6))
 # plt.plot(dates, percentage_changes_true, label=f'Actual NG Spot Price (percent change, next {N} week(s))', color='blue', marker='o')
-# plt.plot(dates, percentage_changes_pred, label=f'Predicted NG Spot Price (predicted percent change, next {N} week(s))', color='red', marker='x')
+# plt.plot(dates, percentage_changes_pred, label=f'Predicted NG Spot Price (percent change, next {N} week(s))', color='red', marker='x')
 # plt.xlabel('Date')
 # plt.ylabel('NG Spot Price change (%)')
 # plt.title('Actual vs Predicted changes in NG Spot Price')
