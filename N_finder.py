@@ -115,7 +115,6 @@ def backtest_model(N, weekly_X, new_data, initial_aum=1000000, risk_tolerance=0.
         'Trade Dates': trade_dates
     }
 
-# Range of N values to test
 N_values = range(1, 52)
 results = []
 
@@ -129,7 +128,6 @@ results_df = pd.DataFrame(results)
 optimal_N = results_df.loc[results_df['Sharpe Ratio'].idxmax()]['N']
 print(f"Optimal N: {optimal_N}")
 
-# Plot performance metrics
 fig, ax1 = plt.subplots(figsize=(10, 6))
 
 color = 'tab:blue'
@@ -154,7 +152,6 @@ ax3.plot(results_df['N'], results_df['Max DD %'], label='Max Drawdown %', color=
 ax3.tick_params(axis='y', labelcolor=color)
 ax3.legend(loc='upper right')
 
-# Highlight optimal N
 plt.axvline(x=optimal_N, color='gray', linestyle='--', linewidth=1, label=f'Optimal N = {optimal_N}')
 plt.text(optimal_N, max(results_df['Sharpe Ratio']), f'N = {optimal_N}', color='gray', ha='center')
 
@@ -164,7 +161,6 @@ plt.grid(True)
 plt.legend()
 plt.show()
 
-# Use optimal N for final backtest and visualization
 final_result = backtest_model(optimal_N, weekly_X, new_data)
 
 plt.figure(figsize=(10, 6))
