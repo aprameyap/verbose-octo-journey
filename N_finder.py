@@ -6,7 +6,6 @@ import json
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-import talib
 
 # Load the model and parameters
 model_file_path = 'catboost_ng_model.bin'
