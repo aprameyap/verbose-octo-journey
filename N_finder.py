@@ -1,3 +1,5 @@
+"""N finder, a hit and trial method to find the most optimum N, for a given risk tolerance and trade threshold."""
+
 import pandas as pd
 import catboost as cb
 import json
