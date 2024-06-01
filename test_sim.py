@@ -1,3 +1,5 @@
+"""Trade simulator and backtester"""
+
 import pandas as pd
 import catboost as cb
 import json
