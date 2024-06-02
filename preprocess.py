@@ -18,8 +18,16 @@ imports_df.set_index('Month', inplace=True)
 weekly_imports_df = imports_df.resample('W-FRI').ffill().reset_index()
 weekly_imports_df.rename(columns={'Month': 'DATE', 'U.S. Natural Gas Imports MMcf': 'Imports_MMcf'}, inplace=True)
 
+exports_df = pd.read_csv('NG/exports_monthly.csv')
+exports_df['Month'] = pd.to_datetime(exports_df['Month'], format='%b %Y')
+exports_df.set_index('Month', inplace=True)
+
+weekly_exports_df = exports_df.resample('W-FRI').ffill().reset_index()
+weekly_exports_df.rename(columns={'Month': 'DATE', 'U.S. Natural Gas Exports MMcf': 'Exports_MMcf'}, inplace=True)
+
 combined_df = pd.merge(weekly_df, weekly_imports_df, on='DATE', how='left')
-combined_df.dropna(subset=['Imports_MMcf'], inplace=True)
+combined_df = pd.merge(combined_df, weekly_exports_df, on='DATE', how='left')
+combined_df.dropna(subset=['Imports_MMcf', 'Exports_MMcf'], inplace=True)
 
 ng_prices_df = pd.read_csv('NG/NG_prices_weekly.csv')
 ng_prices_df['Week of'] = pd.to_datetime(ng_prices_df['Week of'], format='%m/%d/%Y')

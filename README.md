@@ -116,5 +116,6 @@ Data sources:
 - https://www.eia.gov/dnav/ng/ng_pri_fut_s1_w.htm
 - https://www.eia.gov/dnav/ng/ng_prod_sum_dc_NUS_MMCF_m.htm
 - https://www.eia.gov/dnav/ng/hist/rngwhhdm.htm
+- https://www.eia.gov/dnav/ng/ng_move_expc_s1_m.htm
 - https://fred.stlouisfed.org/series/DTWEXBGS
 - https://www.kaggle.com/datasets/utkarshx27/noaa-atlantic-hurricane-database
