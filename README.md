@@ -4,9 +4,11 @@ Forecasting prices of Henry Hub Natural Gas Futures (NYMEX:NG1!)
 
 There is an optimal number of weeks (N) to which the model predicts the cumulative percentage change to the given trading logic.
 The hypothesis would be (check N_finder.py for N calculation): The N value remains constant in near future, the new N value will be searched by running the same backtest through the future. N would also change with the max amount of the aum one is willing to risk, since the simulator doesn't allow trades to take place once open positions exhaust the total aum.\
-In the current test set, N ~ (33-36) and Risk > 0.5 gives the best results. All of this has a threshold of 15% (up or down) for each trade to take place, this can be treated as a variable and optimised also, but finding an optimum threshold will create unnecessary computational complexities. The following image shows the optimum N for 100% risk.
+In the current test set, N ~ (33-36) and Risk > 0.5 gives the best results. All of this has a threshold of 15% (up or down) for each trade to take place, this can be treated as a variable and optimised also, but finding an optimum threshold will create unnecessary computational complexities.
+Adding more features and increasing the time horizon will increase the model's accuracy. The current model is definitely not suited for real-world applications, but just a demonstration.
+The trading logic and simulator are over-simplified and have very little correlation on how a real system would work.
 
-![N_finder.py](Figure_1.png)
+Thus, keeping all these things in mind, please don't try to use this model in hopes of making money.
 
 
 Training info:

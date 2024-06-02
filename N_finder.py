@@ -66,7 +66,7 @@ def backtest_model(N, weekly_X, new_data, initial_aum=1000000, risk_tolerance=0.
         entry_date = dates[i]
         exit_date = dates[i + N] if i + N < len(dates) else dates[-1]
 
-        if abs(percentage_changes_pred[i]) > threshold and ((exit_date - entry_date).days) >= N:
+        if abs(percentage_changes_pred[i]) > threshold:
             if position_size > available_balance:
                 position_size = available_balance
 
@@ -116,7 +116,7 @@ def backtest_model(N, weekly_X, new_data, initial_aum=1000000, risk_tolerance=0.
         'Trade Dates': trade_dates
     }
 
-N_values = range(1, 52)
+N_values = range(1, 44)
 results = []
 
 for N in N_values:

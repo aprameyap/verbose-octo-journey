@@ -40,7 +40,7 @@ def calculate_percentage_change(values, N):
         pct_changes.append(pct_change)
     return pct_changes
 
-N = 36  # Number of weeks ahead for percentage change calculation and position duration
+N = 34  # Number of weeks ahead for percentage change calculation and position duration
 
 percentage_changes_pred = calculate_percentage_change(weekly_predictions, N)
 # print(f"Percentage changes for the next {N} weeks (predictions):", percentage_changes_pred) #Line for debugging
@@ -75,7 +75,7 @@ for i in range(len(percentage_changes_pred)):
     entry_date = dates[i]
     exit_date = dates[i + N] if i + N < len(dates) else dates[-1]
 
-    if abs(percentage_changes_pred[i]) > threshold and ((exit_date - entry_date).days) >= N:
+    if abs(percentage_changes_pred[i]) > threshold:
         if position_size > available_balance:
             position_size = available_balance
 
