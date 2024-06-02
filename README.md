@@ -11,6 +11,33 @@ In the current test set, N ~ (33-36) and Risk > 0.5 gives the best results. All 
 
 Training info:
 
+02-06-2024 (Added exports as a feature)
+```
+Mean Absolute Error: 0.21148400411530524
+Root Mean Squared Error: 0.2946208583556225
+                                Feature  Importance
+1   Cushing OK WTI Spot Price FOB $/bbl   21.756369
+15                                 Salt    8.932936
+2                              DTWEXBGS    8.428988
+5     Europe Brent Spot Price FOB $/bbl    8.355335
+6                          Exports_MMcf    7.180510
+0                  CORESTICKM159SFRBATL    6.667941
+8                          Imports_MMcf    6.098091
+16                 South Central Region    4.886378
+11                      Mountain Region    4.828341
+13                       Pacific Region    3.841371
+10                       Midwest Region    3.032261
+3       Dry_Natural_Gas_Production_MMcf    2.891638
+4                           East Region    2.849203
+14        Plant_Liquids_Production_MMcf    2.830410
+12                              NonSalt    2.309049
+7                Gross_Withdrawals_MMcf    1.458910
+9              Marketed_Production_MMcf    1.452009
+18                             pressure    1.051803
+19         tropicalstorm_force_diameter    0.527162
+20                                 wind    0.433531
+17             hurricane_force_diameter    0.187765
+```
 
 29-05-24 (This is on weekly data, too less data for monthly training)
 ```
