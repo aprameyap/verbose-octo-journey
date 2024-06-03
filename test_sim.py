@@ -6,10 +6,11 @@ import json
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+import talib
 
-# Load the model and parameters
-model_file_path = 'catboost_ng_model.bin'
-params_file_path = 'best_params.json'
+
+model_file_path = 'NG_new/catboost_ng_model.bin'
+params_file_path = 'NG_new/best_params.json'
 
 if os.path.exists(model_file_path):
     loaded_model = cb.CatBoostRegressor()
@@ -25,11 +26,11 @@ else:
     raise FileNotFoundError(f"Parameters file {params_file_path} does not exist.")
 
 # Load and prepare data
-new_data = pd.read_csv('NG/test.csv')
+new_data = pd.read_csv('NG_new/test.csv')
 new_data['DATE'] = pd.to_datetime(new_data['DATE'])
 new_data.set_index('DATE', inplace=True)
 
-features = [col for col in new_data.columns if col not in ['NG_Spot_Price']]
+features = [col for col in new_data.columns if col not in ['Natural Gas Futures Contract 1 $/MMBTU']]
 weekly_X = new_data[features]
 weekly_predictions = loaded_model.predict(weekly_X)
 
@@ -40,14 +41,19 @@ def calculate_percentage_change(values, N):
         pct_changes.append(pct_change)
     return pct_changes
 
-N = 34  # Number of weeks ahead for percentage change calculation and position duration
+N = 37  # Number of weeks ahead for percentage change calculation and position duration
 
 percentage_changes_pred = calculate_percentage_change(weekly_predictions, N)
 # print(f"Percentage changes for the next {N} weeks (predictions):", percentage_changes_pred) #Line for debugging
 
-y_true = new_data['NG_Spot_Price'].values
+y_true = new_data['Natural Gas Futures Contract 1 $/MMBTU'].values
 percentage_changes_true = calculate_percentage_change(y_true, N)
 # print(f"Percentage changes for the next {N} weeks (ground truth):", percentage_changes_true) #Line for debugging
+# plt.plot(y_true, label=f'Actual NG Spot Price', color='blue', marker='o')
+# plt.plot(weekly_predictions, label=f'Predicted NG Spot Price', color='red', marker='x')
+# plt.legend()
+# plt.grid(True)
+# plt.show() #Plot for verifying predictions
 
 min_length = min(len(percentage_changes_pred), len(percentage_changes_true))
 percentage_changes_pred = percentage_changes_pred[:min_length]
@@ -134,20 +140,20 @@ for order in order_book:
     exit_date_str = order[3].strftime('%Y-%m-%d') if order[3] is not None else 'N/A'
     print(f"{order[0]}\t{order[1]:.2f}\t{order[2].strftime('%Y-%m-%d')}\t{exit_date_str}")
 
-# plt.figure(figsize=(10, 6))
-# plt.plot(dates, percentage_changes_true, label=f'Actual NG Spot Price (percent change, next {N} week(s))', color='blue', marker='o')
-# plt.plot(dates, percentage_changes_pred, label=f'Predicted NG Spot Price (percent change, next {N} week(s))', color='red', marker='x')
-# plt.xlabel('Date')
-# plt.ylabel('NG Spot Price change (%)')
-# plt.title('Actual vs Predicted changes in NG Spot Price')
-# plt.legend()
-# plt.grid(True)
-# plt.show()
+plt.figure(figsize=(10, 6))
+plt.plot(dates, percentage_changes_true, label=f'Actual NG Spot Price (percent change, next {N} week(s))', color='blue', marker='o')
+plt.plot(dates, percentage_changes_pred, label=f'Predicted NG Spot Price (percent change, next {N} week(s))', color='red', marker='x')
+plt.xlabel('Date')
+plt.ylabel('NG Spot Price change (%)')
+plt.title('Actual vs Predicted changes in NG Spot Price')
+plt.legend()
+plt.grid(True)
+plt.show()
 
-# plt.figure(figsize=(10, 6))
-# plt.plot(trade_dates, portfolio_values, marker='o')
-# plt.xlabel('Date')
-# plt.ylabel('Portfolio Value')
-# plt.title(f'Portfolio Value Over Time (CAGR: {cagr:.2f}%, Sharpe ratio: {sharpe_ratio:.2f}, Max DD %: {((np.abs(max_drawdown) / initial_aum) * 100):.2f}%)')
-# plt.grid(True)
-# plt.show()
+plt.figure(figsize=(10, 6))
+plt.plot(trade_dates, portfolio_values, marker='o')
+plt.xlabel('Date')
+plt.ylabel('Portfolio Value')
+plt.title(f'Portfolio Value Over Time (CAGR: {cagr:.2f}%, Sharpe ratio: {sharpe_ratio:.2f}, Max DD %: {((np.abs(max_drawdown) / initial_aum) * 100):.2f}%)')
+plt.grid(True)
+plt.show()

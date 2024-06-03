@@ -8,8 +8,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load the model and parameters
-model_file_path = 'catboost_ng_model.bin'
-params_file_path = 'best_params.json'
+model_file_path = 'NG_new/catboost_ng_model.bin'
+params_file_path = 'NG_new/best_params.json'
 
 if os.path.exists(model_file_path):
     loaded_model = cb.CatBoostRegressor()
@@ -25,11 +25,11 @@ else:
     raise FileNotFoundError(f"Parameters file {params_file_path} does not exist.")
 
 # Load and prepare data
-new_data = pd.read_csv('NG/test.csv')
+new_data = pd.read_csv('NG_new/test.csv')
 new_data['DATE'] = pd.to_datetime(new_data['DATE'])
 new_data.set_index('DATE', inplace=True)
 
-features = [col for col in new_data.columns if col not in ['NG_Spot_Price']]
+features = [col for col in new_data.columns if col not in ['Natural Gas Futures Contract 1 $/MMBTU']]
 weekly_X = new_data[features]
 
 def calculate_percentage_change(values, N):
@@ -43,7 +43,7 @@ def backtest_model(N, weekly_X, new_data, initial_aum=1000000, risk_tolerance=0.
     weekly_predictions = loaded_model.predict(weekly_X)
 
     percentage_changes_pred = calculate_percentage_change(weekly_predictions, N)
-    y_true = new_data['NG_Spot_Price'].values
+    y_true = new_data['Natural Gas Futures Contract 1 $/MMBTU'].values
     percentage_changes_true = calculate_percentage_change(y_true, N)
 
     min_length = min(len(percentage_changes_pred), len(percentage_changes_true))
@@ -116,7 +116,7 @@ def backtest_model(N, weekly_X, new_data, initial_aum=1000000, risk_tolerance=0.
         'Trade Dates': trade_dates
     }
 
-N_values = range(1, 44)
+N_values = range(1, 52)
 results = []
 
 for N in N_values:

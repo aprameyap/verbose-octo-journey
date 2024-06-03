@@ -4,14 +4,55 @@ Forecasting prices of Henry Hub Natural Gas Futures (NYMEX:NG1!)
 
 There is an optimal number of weeks (N) to which the model predicts the cumulative percentage change to the given trading logic.
 The hypothesis would be (check N_finder.py for N calculation): The N value remains constant in near future, the new N value will be searched by running the same backtest through the future. N would also change with the max amount of the aum one is willing to risk, since the simulator doesn't allow trades to take place once open positions exhaust the total aum.\
-In the current test set, N ~ (33-36) and Risk > 0.5 gives the best results. All of this has a threshold of 15% (up or down) for each trade to take place, this can be treated as a variable and optimised also, but finding an optimum threshold will create unnecessary computational complexities.
+N_finder.py is a a hit and trial method for finding the best N for your backtesting period.
+In the current test set, N ~ (36-37) and Risk > 0.5 gives the best results. All of this has a threshold of 15% (up or down) for each trade to take place, this can be treated as a variable and optimised also, but finding an optimum threshold will create unnecessary computational complexities.
 Adding more features and increasing the time horizon will increase the model's accuracy. The current model is definitely not suited for real-world applications, but just a demonstration.
-The trading logic and simulator are over-simplified and have very little correlation on how a real system would work.
+The trading logic and simulator, though, are over-simplified and have very little correlation on how a real system would work.
 
-Thus, keeping all these things in mind, please don't try to use this model in hopes of making money.
+Update (03-06-2024): I recreated the dataset (in NG_new), the old, small dataset still exists in NG directory (for the sake of showing progress :)). The new dataset now goes back .till 1994, compared 2010 earlier. Lag features were also added to NG1 price, Crude oil price, imports, exports and CPI
+
+!['Figure_1.png']
+!['Figure_2.png']
+!['Figure_3.png']
 
 
 Training info:
+
+03-06-2024 (Changed up all of the features, added 4 weeks lag, removed features which didn't go to the 90s, thus increasing the size of the dataset by 3x)
+```
+Mean Absolute Error: 0.2214295849120274
+Root Mean Squared Error: 0.3452974706866467
+                                         Feature  Importance
+20  Natural Gas Futures Contract 1 $/MMBTU_Lag_1   21.788647
+21  Natural Gas Futures Contract 1 $/MMBTU_Lag_2    8.502423
+22  Natural Gas Futures Contract 1 $/MMBTU_Lag_3    5.638664
+23  Natural Gas Futures Contract 1 $/MMBTU_Lag_4    4.758264
+27                                          wind    3.739596
+8                          Crude_Oil_Price_Lag_3    3.727448
+5                                Crude_Oil_Price    3.466177
+16                            Imports_MMcf_Lag_1    3.054084
+24                      hurricane_force_diameter    3.040696
+7                          Crude_Oil_Price_Lag_2    3.031803
+2                                      CPI_Lag_2    2.994720
+13                            Exports_MMcf_Lag_3    2.964022
+9                          Crude_Oil_Price_Lag_4    2.957043
+1                                      CPI_Lag_1    2.907031
+0                                            CPI    2.854183
+6                          Crude_Oil_Price_Lag_1    2.724830
+4                                      CPI_Lag_4    2.581632
+3                                      CPI_Lag_3    2.397774
+26                  tropicalstorm_force_diameter    2.388883
+17                            Imports_MMcf_Lag_2    2.143555
+25                                      pressure    2.025327
+19                            Imports_MMcf_Lag_4    2.006282
+14                            Exports_MMcf_Lag_4    1.845286
+11                            Exports_MMcf_Lag_1    1.692056
+15                                  Imports_MMcf    1.628155
+18                            Imports_MMcf_Lag_3    1.249912
+10                                  Exports_MMcf    1.057670
+12                            Exports_MMcf_Lag_2    0.833839
+```
+
 
 02-06-2024 (Added exports as a feature)
 ```
