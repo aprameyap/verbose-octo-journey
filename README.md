@@ -11,9 +11,9 @@ The trading logic and simulator, though, are over-simplified and have very littl
 
 Update (03-06-2024): I recreated the dataset (in NG_new), the old, small dataset still exists in NG directory (for the sake of showing progress :)). The new dataset now goes back .till 1994, compared 2010 earlier. Lag features were also added to NG1 price, Crude oil price, imports, exports and CPI
 
-!['Figure_1.png']
-!['Figure_2.png']
-!['Figure_3.png']
+!['N finder'](Figure_1.png)
+!['Predicted changes v/s ground truth'](Figure_2.png)
+!['1M simulated portfolio value over the backtesting period'](Figure_3.png)
 
 
 Training info:
